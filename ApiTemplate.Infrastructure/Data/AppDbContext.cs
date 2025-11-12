@@ -1,10 +1,7 @@
 ﻿using ApiTemplate.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using System.Reflection;
 
 namespace ApiTemplate.Infrastructure.Data
 {
@@ -15,14 +12,15 @@ namespace ApiTemplate.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-            // Configurações adicionais aqui
-
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.HasIndex(e => e.Username).IsUnique();
-                entity.HasIndex(e => e.Email).IsUnique();
-            });
+            modelBuilder
+                .ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+#if DEBUG
+            optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information)
+                          .EnableSensitiveDataLogging();
+#endif
         }
     }
 }
