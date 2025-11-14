@@ -1,12 +1,8 @@
-using ApiTemplate.Application.Interfaces;
-using ApiTemplate.Application.Services;
-using ApiTemplate.Domain.Interfaces;
 using ApiTemplate.Infrastructure.Data;
-using ApiTemplate.Infrastructure.Repositories;
+using ApiTemplate.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,12 +11,14 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' não encontrada.");
 
 // Configurar DbContext
-builder.Services
-    .AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+//builder.Services
+//    .AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
 // Configurar JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var secretKey = Encoding.ASCII.GetBytes(jwtSettings["Secret"]);
+
+
 
 builder.Services.AddAuthentication(options =>
 {
@@ -47,8 +45,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 // Registrar dependências
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddApiContext(connectionString);
+builder.Services.AddRepositories();
+builder.Services.AddServices();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -63,6 +62,7 @@ builder.Services.AddSwaggerGen(options =>
         logging.AddDebug();
     });
 
+# region Swagger JWT Configuration
 //builder.Services.AddSwaggerGen(c =>
 //{
 //    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
@@ -89,6 +89,7 @@ builder.Services.AddSwaggerGen(options =>
 //        }
 //    });
 //});
+# endregion
 
 var app = builder.Build();
 
@@ -104,5 +105,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
 
 app.Run();

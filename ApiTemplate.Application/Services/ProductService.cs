@@ -7,17 +7,15 @@ namespace ApiTemplate.Application.Services
 {
     public class ProductService(IRepository<Product> repository) : IProductService
     {
-        private readonly IRepository<Product> _repository = repository;
-
         public async Task<ProductDto> GetProductByIdAsync(Guid id)
         {
-            var product = await _repository.GetByIdAsync(id);
+            var product = await repository.GetByIdAsync(id);
             return MapToDto(product);
         }
 
         public async Task<IEnumerable<ProductDto>> GetAllProductsAsync()
         {
-            var products = await _repository.GetAllAsync();
+            var products = await repository.GetAllAsync();
             return products.Select(MapToDto);
         }
 
@@ -31,7 +29,7 @@ namespace ApiTemplate.Application.Services
                 CreatedAt = DateTime.UtcNow
             };
 
-            var created = await _repository.AddAsync(product);
+            var created = await repository.AddAsync(product);
             return MapToDto(created);
         }
 
