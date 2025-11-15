@@ -22,8 +22,4 @@
     <ProjectReference Include="..\ApiTemplate.Domain\ApiTemplate.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

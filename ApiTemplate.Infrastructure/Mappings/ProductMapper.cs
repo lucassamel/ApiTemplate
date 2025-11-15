@@ -23,14 +23,13 @@ namespace ApiTemplate.Infrastructure.Mappings
                 .IsRequired()
                 .HasColumnName("CreatedAt")
                 .HasColumnType("DATETIME")
-                .HasDefaultValue(DateTime.UtcNow);
+                .HasDefaultValueSql("GETUTCDATE()");
 
             builder
                 .Property( x => x.UpdatedAt)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnName("UpdatedAt")
-                .HasColumnType("DATETIME")
-                .HasDefaultValue(DateTime.UtcNow);
+                .HasColumnType("DATETIME");
 
             builder
                 .Property(x => x.Name)

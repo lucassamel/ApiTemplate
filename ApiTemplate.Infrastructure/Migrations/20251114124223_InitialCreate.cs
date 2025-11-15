@@ -19,8 +19,8 @@ namespace ApiTemplate.Infrastructure.Migrations
                     Name = table.Column<string>(type: "NVARCHAR(200)", nullable: false),
                     Price = table.Column<decimal>(type: "DECIMAL(18,2)", nullable: false),
                     Description = table.Column<string>(type: "NVARCHAR(1000)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "DATETIME", nullable: false, defaultValue: new DateTime(2025, 11, 12, 0, 3, 43, 523, DateTimeKind.Utc).AddTicks(6491)),
-                    UpdatedAt = table.Column<DateTime>(type: "DATETIME", nullable: false, defaultValue: new DateTime(2025, 11, 12, 0, 3, 43, 526, DateTimeKind.Utc).AddTicks(9228))
+                    CreatedAt = table.Column<DateTime>(type: "DATETIME", nullable: false, defaultValue: new DateTime(2025, 11, 14, 12, 42, 22, 983, DateTimeKind.Utc).AddTicks(9835)),
+                    UpdatedAt = table.Column<DateTime>(type: "DATETIME", nullable: false, defaultValue: new DateTime(2025, 11, 14, 12, 42, 22, 986, DateTimeKind.Utc).AddTicks(7389))
                 },
                 constraints: table =>
                 {
@@ -36,8 +36,8 @@ namespace ApiTemplate.Infrastructure.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "DATETIME", nullable: false, defaultValue: new DateTime(2025, 11, 12, 0, 3, 43, 528, DateTimeKind.Utc).AddTicks(538)),
-                    UpdatedAt = table.Column<DateTime>(type: "DATETIME", nullable: false, defaultValue: new DateTime(2025, 11, 12, 0, 3, 43, 528, DateTimeKind.Utc).AddTicks(4176))
+                    CreatedAt = table.Column<DateTime>(type: "DATETIME", nullable: false, defaultValue: new DateTime(2025, 11, 14, 12, 42, 22, 987, DateTimeKind.Utc).AddTicks(8293)),
+                    UpdatedAt = table.Column<DateTime>(type: "DATETIME", nullable: false, defaultValue: new DateTime(2025, 11, 14, 12, 42, 22, 987, DateTimeKind.Utc).AddTicks(8843))
                 },
                 constraints: table =>
                 {

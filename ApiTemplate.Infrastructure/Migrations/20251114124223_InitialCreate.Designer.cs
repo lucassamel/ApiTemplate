@@ -4,6 +4,7 @@ using ApiTemplate.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiTemplate.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251114124223_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,8 +35,8 @@ namespace ApiTemplate.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("DATETIME")
-                        .HasColumnName("CreatedAt")
-                        .HasDefaultValueSql("GETUTCDATE()");
+                        .HasDefaultValue(new DateTime(2025, 11, 14, 12, 42, 22, 983, DateTimeKind.Utc).AddTicks(9835))
+                        .HasColumnName("CreatedAt");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -49,8 +52,10 @@ namespace ApiTemplate.Infrastructure.Migrations
                         .HasColumnType("DECIMAL(18,2)")
                         .HasColumnName("Price");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("DATETIME")
+                        .HasDefaultValue(new DateTime(2025, 11, 14, 12, 42, 22, 986, DateTimeKind.Utc).AddTicks(7389))
                         .HasColumnName("UpdatedAt");
 
                     b.HasKey("Id");
@@ -68,8 +73,8 @@ namespace ApiTemplate.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("DATETIME")
-                        .HasColumnName("CreatedAt")
-                        .HasDefaultValueSql("GETUTCDATE()");
+                        .HasDefaultValue(new DateTime(2025, 11, 14, 12, 42, 22, 987, DateTimeKind.Utc).AddTicks(8293))
+                        .HasColumnName("CreatedAt");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -83,8 +88,10 @@ namespace ApiTemplate.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("DATETIME")
+                        .HasDefaultValue(new DateTime(2025, 11, 14, 12, 42, 22, 987, DateTimeKind.Utc).AddTicks(8843))
                         .HasColumnName("UpdatedAt");
 
                     b.Property<string>("Username")

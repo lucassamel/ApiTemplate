@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiTemplate.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251112000344_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251115121922_sup2")]
+    partial class sup2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,7 +35,7 @@ namespace ApiTemplate.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("DATETIME")
-                        .HasDefaultValue(new DateTime(2025, 11, 12, 0, 3, 43, 523, DateTimeKind.Utc).AddTicks(6491))
+                        .HasDefaultValue(new DateTime(2025, 11, 15, 12, 19, 22, 425, DateTimeKind.Utc).AddTicks(9200))
                         .HasColumnName("CreatedAt");
 
                     b.Property<string>("Description")
@@ -55,7 +55,7 @@ namespace ApiTemplate.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("DATETIME")
-                        .HasDefaultValue(new DateTime(2025, 11, 12, 0, 3, 43, 526, DateTimeKind.Utc).AddTicks(9228))
+                        .HasDefaultValue(new DateTime(2025, 11, 15, 12, 19, 22, 428, DateTimeKind.Utc).AddTicks(5679))
                         .HasColumnName("UpdatedAt");
 
                     b.HasKey("Id");
@@ -73,7 +73,7 @@ namespace ApiTemplate.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("DATETIME")
-                        .HasDefaultValue(new DateTime(2025, 11, 12, 0, 3, 43, 528, DateTimeKind.Utc).AddTicks(538))
+                        .HasDefaultValue(new DateTime(2025, 11, 15, 12, 19, 22, 429, DateTimeKind.Utc).AddTicks(5997))
                         .HasColumnName("CreatedAt");
 
                     b.Property<string>("Email")
@@ -91,7 +91,7 @@ namespace ApiTemplate.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("DATETIME")
-                        .HasDefaultValue(new DateTime(2025, 11, 12, 0, 3, 43, 528, DateTimeKind.Utc).AddTicks(4176))
+                        .HasDefaultValue(new DateTime(2025, 11, 15, 12, 19, 22, 429, DateTimeKind.Utc).AddTicks(6522))
                         .HasColumnName("UpdatedAt");
 
                     b.Property<string>("Username")
