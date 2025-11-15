@@ -7,21 +7,16 @@ namespace ApiTemplate.API.Controllers
 
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthController : ControllerBase
+    public class AuthController(IAuthService authService) : ControllerBase
     {
-        private readonly IAuthService _authService;
-
-        public AuthController(IAuthService authService)
-        {
-            _authService = authService;
-        }
+        
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
             try
             {
-                var response = await _authService.RegisterAsync(registerDto);
+                var response = await authService.RegisterAsync(registerDto);
                 return Ok(response);
             }
             catch (InvalidOperationException ex)
@@ -35,7 +30,7 @@ namespace ApiTemplate.API.Controllers
         {
             try
             {
-                var response = await _authService.LoginAsync(loginDto);
+                var response = await authService.LoginAsync(loginDto);
                 return Ok(response);
             }
             catch (UnauthorizedAccessException ex)

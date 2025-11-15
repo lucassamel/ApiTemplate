@@ -3,6 +3,7 @@ using ApiTemplate.Application.Services;
 using ApiTemplate.Domain.Interfaces;
 using ApiTemplate.Infrastructure.Data;
 using ApiTemplate.Infrastructure.Repositories;
+using ApiTemplate.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -34,6 +35,9 @@ namespace ApiTemplate.Infrastructure.Extensions
            
             // Services
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ITokenService, TokenService>();
+
             return services;
         }
     }
