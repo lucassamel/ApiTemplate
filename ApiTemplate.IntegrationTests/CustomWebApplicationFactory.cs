@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ApiTemplate.IntegrationTests
@@ -13,7 +12,7 @@ namespace ApiTemplate.IntegrationTests
         {
             builder.ConfigureServices(services =>
             {
-                // Remover o DbContext existente
+                // Remover o DbContextOptions<AppDbContext> registrado
                 var descriptor = services.SingleOrDefault(
                     d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
 
@@ -22,20 +21,30 @@ namespace ApiTemplate.IntegrationTests
                     services.Remove(descriptor);
                 }
 
-                // Adicionar DbContext com banco em memória
+                var efInternalProvider = new ServiceCollection()
+                    .AddEntityFrameworkInMemoryDatabase()
+                    .BuildServiceProvider();
+
+                // Adicionar DbContext com banco em memória usando um nome único por teste
+                var databaseName = $"TestDatabase_{Guid.NewGuid()}";
+
                 services.AddDbContext<AppDbContext>(options =>
                 {
-                    options.UseInMemoryDatabase("TestDatabase");
+                    options.UseInMemoryDatabase(databaseName);
+                    options.UseInternalServiceProvider(efInternalProvider);
+                    options.EnableSensitiveDataLogging();
                 });
 
-                // Criar o banco de dados
-                var sp = services.BuildServiceProvider();
-                using var scope = sp.CreateScope();
-                var scopedServices = scope.ServiceProvider;
-                var db = scopedServices.GetRequiredService<AppDbContext>();
+                // Não construir um provedor de serviço separado aqui para evitar registrar múltiplos
+                // provedores de banco de dados no mesmo provedor de serviço. O banco de dados em memória
+                // será inicializado quando a aplicação criar o DbContext em tempo de execução.
 
-                db.Database.EnsureCreated();
+                
             });
+            
+
+            // Definir ambiente de teste
+            builder.UseEnvironment("Testing");
         }
     }
 }

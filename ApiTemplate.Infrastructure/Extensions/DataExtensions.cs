@@ -16,7 +16,7 @@ namespace ApiTemplate.Infrastructure.Extensions
             services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseSqlServer(connectionString);
-            });
+            });      
 
             return services;
         }

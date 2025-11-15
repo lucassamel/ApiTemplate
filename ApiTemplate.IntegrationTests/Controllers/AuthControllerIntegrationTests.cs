@@ -1,10 +1,7 @@
 ﻿using ApiTemplate.Application.DTOs;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
 
 namespace ApiTemplate.IntegrationTests.Controllers
@@ -190,7 +187,7 @@ namespace ApiTemplate.IntegrationTests.Controllers
             };
 
             // Act
-            var response = await _client.PostAsJsonAsync("/api/v1/auth/login", loginDto);
+            var response = await _client.PostAsJsonAsync("/api/auth/login", loginDto);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
