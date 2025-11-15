@@ -1,3 +1,4 @@
+using ApiTemplate.API.Extensions.ConfigurationExtensions;
 using ApiTemplate.Infrastructure.Data;
 using ApiTemplate.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,6 +19,14 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var secretKey = Encoding.ASCII.GetBytes(jwtSettings["Secret"]);
 
+
+builder.Services.AddSwaggerDocumentation()
+    .AddLogging( logging =>
+        {
+        logging.AddConsole();
+        logging.AddDebug();
+        }
+    );
 
 
 builder.Services.AddAuthentication(options =>
@@ -51,16 +60,6 @@ builder.Services.AddServices();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title =  "Teste" });
-})
-   .AddLogging(logging =>
-    {
-        logging.AddConsole();
-        logging.AddDebug();
-    });
 
 # region Swagger JWT Configuration
 //builder.Services.AddSwaggerGen(c =>
