@@ -9,7 +9,9 @@ namespace ApiTemplate.Application.Services
     {
         public async Task<ProductDto> GetProductByIdAsync(Guid id)
         {
-            var product = await repository.GetByIdAsync(id);
+            var product = await repository.GetByIdAsync(id) ??
+                throw new InvalidOperationException("Produto não encontrado.");
+
             return MapToDto(product);
         }
 
@@ -41,14 +43,25 @@ namespace ApiTemplate.Application.Services
             Description = product.Description
         };
 
-        public Task UpdateProductAsync(Guid id, CreateProductDto dto)
+        public async Task UpdateProductAsync(Guid id, CreateProductDto dto)
         {
-            throw new NotImplementedException();
+            var existingProduct = await repository.GetByIdAsync(id) ?? 
+                throw new InvalidOperationException("Produto não encontrado.");
+            
+            existingProduct.Name = dto.Name;
+            existingProduct.Price = dto.Price;
+            existingProduct.Description = dto.Description;
+            existingProduct.UpdatedAt = DateTime.UtcNow;
+
+            await repository.UpdateAsync(existingProduct);
         }
 
-        public Task DeleteProductAsync(Guid id)
+        public async Task DeleteProductAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var existingProduct = await repository.GetByIdAsync(id) ??
+                throw new InvalidOperationException("Produto não encontrado.");
+
+            await repository.DeleteAsync(existingProduct.Id);
         }
     }
 }

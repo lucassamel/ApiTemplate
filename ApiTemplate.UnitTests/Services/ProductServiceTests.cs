@@ -53,15 +53,18 @@ namespace ApiTemplate.UnitTests.Services
         {
             // Arrange
             var productId = Guid.NewGuid();
+
             _mockRepository
                 .Setup(r => r.GetByIdAsync(productId))
                 .ReturnsAsync((Product?)null);
 
             // Act
-            var result = await _productService.GetProductByIdAsync(productId);
+            //var result = await _productService.GetProductByIdAsync(productId);
 
             // Assert
-            result.Should().BeNull();
+            await Assert.ThrowsAsync<InvalidOperationException>(
+                () => _productService.GetProductByIdAsync(productId));
+            
             _mockRepository.Verify(r => r.GetByIdAsync(productId), Times.Once);
         }
 
@@ -184,7 +187,7 @@ namespace ApiTemplate.UnitTests.Services
                 .ReturnsAsync((Product?)null);
 
             // Act & Assert
-            await Assert.ThrowsAsync<KeyNotFoundException>(
+            await Assert.ThrowsAsync<InvalidOperationException>(
                 () => _productService.UpdateProductAsync(productId, updateDto));
 
             _mockRepository.Verify(r => r.UpdateAsync(It.IsAny<Product>()), Times.Never);
@@ -193,17 +196,41 @@ namespace ApiTemplate.UnitTests.Services
         [Fact]
         public async Task DeleteProductAsync_ShouldCallRepositoryDelete()
         {
-            // Arrange
-            var productId = Guid.NewGuid();
+            // Arrange           
+            var createDto = new CreateProductDto
+            {
+                Name = "New Product",
+                Price = 49.99m,
+                Description = "New Description"
+            };
+
+            var createdProduct = new Product
+            {
+                Id = Guid.NewGuid(),
+                Name = createDto.Name,
+                Price = createDto.Price,
+                Description = createDto.Description,
+                CreatedAt = DateTime.UtcNow
+            };
+
             _mockRepository
-                .Setup(r => r.DeleteAsync(productId))
+                .Setup(r => r.AddAsync(It.IsAny<Product>()))
+                .ReturnsAsync(createdProduct);
+
+            // ensure GetByIdAsync returns the product so service won't throw
+            _mockRepository
+                .Setup(r => r.GetByIdAsync(createdProduct.Id))
+                .ReturnsAsync((Product?)createdProduct);
+
+            _mockRepository
+                .Setup(r => r.DeleteAsync(createdProduct.Id))
                 .Returns(Task.CompletedTask);
 
             // Act
-            await _productService.DeleteProductAsync(productId);
+            await _productService.DeleteProductAsync(createdProduct.Id);
 
             // Assert
-            _mockRepository.Verify(r => r.DeleteAsync(productId), Times.Once);
+            _mockRepository.Verify(r => r.DeleteAsync(createdProduct.Id), Times.Once);
         }
     }
 }
