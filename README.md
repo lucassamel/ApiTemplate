@@ -2,7 +2,7 @@
 
 `docker compose up --build`
 
-[https://localhost:8081/swagger/index.html](API)
+[API](https://localhost:8081/swagger/index.html)
 
 `dotnet ef migrations add InitialCreate --project ..\ApiTemplate.Infrastructure\`
 
