@@ -1,0 +1,31 @@
+# ============================
+# 1) Imagem de build (SDK)
+# ============================
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copia csproj e restaura dependências
+COPY *.csproj ./
+RUN dotnet restore
+
+# Copia todo o código e faz o publish
+COPY . .
+RUN dotnet publish -c Release -o /app/publish
+
+# ============================
+# 2) Imagem final (runtime)
+# ============================
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+WORKDIR /app
+
+# Copia arquivos publicados da etapa de build
+COPY --from=build /app/publish .
+
+# Porta padrão da sua API dentro do container
+EXPOSE 8080
+
+# Variável padrão do ASP.NET
+ENV ASPNETCORE_URLS=http://+:8080
+
+# Comando de inicialização
+ENTRYPOINT ["dotnet", "ApiTemplate.API.dll"]

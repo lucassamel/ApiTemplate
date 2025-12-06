@@ -92,6 +92,13 @@ builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
+// APLICA AS MIGRATIONS NA INICIALIZAÇÃO
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>(); // troque pelo nome do seu DbContext
+    db.Database.Migrate();
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
