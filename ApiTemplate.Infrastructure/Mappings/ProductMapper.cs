@@ -47,6 +47,12 @@ namespace ApiTemplate.Infrastructure.Mappings
                 .IsRequired()
                 .HasColumnName("Price")
                 .HasColumnType("DECIMAL(18,2)");
+
+            builder
+                .Property(x => x.Quantity)
+                .IsRequired()
+                .HasColumnName("Quantity")
+                .HasColumnType("INT");
         }   
     
     }
