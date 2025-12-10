@@ -1,4 +1,5 @@
-﻿using ApiTemplate.Application.DTOs;
+﻿using ApiTemplate.API.Extensions;
+using ApiTemplate.Application.DTOs;
 using ApiTemplate.Application.Interfaces;
 using ApiTemplate.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -24,11 +25,11 @@ namespace ApiTemplate.API.Controllers
         /// <response code="400">Querystring inválida.</response>
         /// <response code="404">Se nenhum produto for encontrado.</response>
         /// <response code="500">Erro interno.</response>
-        [HttpGet]
         [ProducesResponseType(typeof(Response<IEnumerable<ProductDto>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Response<IEnumerable<string>>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Response<string>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var products = await _productService.GetAllProductsAsync();
@@ -52,11 +53,11 @@ namespace ApiTemplate.API.Controllers
         /// <response code="400">Querystring inválida.</response>
         /// <response code="404">Se nenhum produto for encontrado.</response>
         /// <response code="500">Erro interno.</response>
-        [HttpGet("{id}")]
         [ProducesResponseType(typeof(Response<ProductDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Response<IEnumerable<string>>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(Response<string>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [HttpGet("{id:Guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var product = await _productService.GetProductByIdAsync(id);
@@ -69,15 +70,31 @@ namespace ApiTemplate.API.Controllers
             return Ok(new Response<ProductDto>(product));
         }
 
+        /// <summary>
+        ///     Cadastra um novo produto
+        /// </summary>
+        /// <remarks>
+        ///     Cadastra um novo produto
+        /// </remarks>        
+        /// <returns>O produto cadastrado</returns>
+        /// <response code="201">Retorna o produto cadastrado</response>        
+        /// <response code="404">Se nenhum produto for encontrado.</response>
+        /// <response code="500">Erro interno.</response>
+        [ProducesResponseType(typeof(Response<dynamic>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<IEnumerable<string>>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateProductDto dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(new Response<IEnumerable<string>>(ModelState.GetErrors()));
+
             var product = await _productService.CreateProductAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
+            return Created( string.Empty, new Response<ProductDto>(product));
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] CreateProductDto dto)
+        [HttpPut("{id:Guid}")]
+        public async Task<IActionResult> Update([FromQuery] Guid id, [FromBody] CreateProductDto dto)
         {
             await _productService.UpdateProductAsync(id, dto);
             return NoContent();
@@ -93,7 +110,7 @@ namespace ApiTemplate.API.Controllers
         /// <response code="204">Produto deletado</response>        
         /// <response code="404">Se nenhum produto for encontrado.</response>
         /// <response code="500">Erro interno.</response>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:Guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             await _productService.DeleteProductAsync(id);
