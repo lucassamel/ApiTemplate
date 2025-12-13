@@ -9,7 +9,7 @@
         public string Localidade { get; set; } = string.Empty;
         public string Uf { get; set; } = string.Empty;
 
-        public User User { get; set; } = new();
+        public User User { get; set; }
         public Guid UserId { get; set; }
     }
 }

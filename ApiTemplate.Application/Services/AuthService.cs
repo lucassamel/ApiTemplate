@@ -12,30 +12,39 @@ using System.Threading.Tasks;
 namespace ApiTemplate.Application.Services 
 {
 
-    public class AuthService(IRepository<User> userRepository, ITokenService tokenService) : IAuthService
+    public class AuthService(IRepository<User> userRepository, 
+        ITokenService tokenService, IUserRepository userRepository2) : IAuthService
     {
         private readonly IRepository<User> _userRepository = userRepository;
+        private readonly IUserRepository _userRepository2 = userRepository2;
         private readonly ITokenService _tokenService = tokenService;
 
         public async Task<AuthResponseDto> LoginAsync(LoginDto loginDto)
         {
-            var users = await _userRepository.GetAllAsync();
-            var user = users.FirstOrDefault(u => u.Username == loginDto.Username);
+            try
+            {               
+                var user = await _userRepository2.GetUserByUsername(loginDto.Username);
 
-            if (user == null || !VerifyPassword(loginDto.Password, user.PasswordHash))
-            {
-                throw new UnauthorizedAccessException("Credenciais inválidas");
+                if (user == null || !VerifyPassword(loginDto.Password, user.PasswordHash))
+                {
+                    throw new UnauthorizedAccessException("Credenciais inválidas");
+                }
+
+                var token = _tokenService.GenerateToken(user);
+
+                return new AuthResponseDto
+                {
+                    Token = token,
+                    Username = user.Username,
+                    Email = user.Email,
+                    ExpiresAt = DateTime.UtcNow.AddHours(2)
+                };
             }
-
-            var token = _tokenService.GenerateToken(user);
-
-            return new AuthResponseDto
+            catch (Exception ex)
             {
-                Token = token,
-                Username = user.Username,
-                Email = user.Email,
-                ExpiresAt = DateTime.UtcNow.AddHours(2)
-            };
+                throw new Exception("Erro ao efetuar login", ex);
+            }    
+            
         }
 
         public async Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto)

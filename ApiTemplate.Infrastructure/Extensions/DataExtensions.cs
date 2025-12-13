@@ -26,6 +26,7 @@ namespace ApiTemplate.Infrastructure.Extensions
 
             // Repositories
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IUserRepository, UserReposotiry>();
 
             return services;
         }

@@ -31,6 +31,10 @@ namespace ApiTemplate.Infrastructure.Mappings
                 .HasColumnName("UpdatedAt")
                 .HasColumnType("DATETIME");
                 
+            builder
+                .HasOne(x => x.Address)
+                .WithOne(x => x.User)
+                .HasForeignKey<Address>(x => x.UserId);
         }
     }
 }

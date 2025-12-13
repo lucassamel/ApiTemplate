@@ -13,6 +13,6 @@ namespace ApiTemplate.Domain.Entities
         public string PasswordHash { get; set; } = string.Empty;
         public string Role { get; set; } = string.Empty;
 
-        public Address Address { get; set; } = new();
+        public Address Address { get; set; }     
     }
 }
