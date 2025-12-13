@@ -52,6 +52,7 @@ namespace ApiTemplate.Application.Services
             existingProduct.Price = dto.Price;
             existingProduct.Description = dto.Description;
             existingProduct.UpdatedAt = DateTime.UtcNow;
+            existingProduct.Count = dto.Count;
 
             await repository.UpdateAsync(existingProduct);
         }

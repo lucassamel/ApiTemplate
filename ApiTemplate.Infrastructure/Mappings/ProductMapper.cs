@@ -49,9 +49,9 @@ namespace ApiTemplate.Infrastructure.Mappings
                 .HasColumnType("DECIMAL(18,2)");
 
             builder
-                .Property(x => x.Quantity)
+                .Property(x => x.Count)
                 .IsRequired()
-                .HasColumnName("Quantity")
+                .HasColumnName("Count")
                 .HasColumnType("INT");
         }   
     

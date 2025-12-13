@@ -93,9 +93,24 @@ namespace ApiTemplate.API.Controllers
             return Created( string.Empty, new Response<ProductDto>(product));
         }
 
+        /// <summary>
+        ///     Atualiza as um produto
+        /// </summary>
+        /// <remarks>
+        ///     Atualiza um produto
+        /// </remarks>        
+        /// <response code="204">Produto atualizado</response>        
+        /// <response code="404">Se nenhum produto for encontrado.</response>
+        /// <response code="500">Erro interno.</response>
+        [ProducesResponseType(typeof(Response<dynamic>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<IEnumerable<string>>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         [HttpPut("{id:Guid}")]
         public async Task<IActionResult> Update([FromQuery] Guid id, [FromBody] CreateProductDto dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(new Response<IEnumerable<string>>(ModelState.GetErrors()));
+
             await _productService.UpdateProductAsync(id, dto);
             return NoContent();
         }
