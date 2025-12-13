@@ -60,6 +60,7 @@ builder.Services.AddServices();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddCorsPolicy();
 
 # region Swagger JWT Configuration
 //builder.Services.AddSwaggerGen(c =>
@@ -108,10 +109,15 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseRouting(); 
+
+app.UseCors(CorsSetup.CORS_POLICY_NAME); 
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
-app.UseCors(CorsSetup.CORS_POLICY_NAME);
 
 app.Run();
 

@@ -33,7 +33,7 @@ namespace ApiTemplate.Infrastructure.Extensions
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
            
-            // Services
+            // Services            
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();
