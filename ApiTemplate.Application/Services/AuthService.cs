@@ -54,10 +54,10 @@ namespace ApiTemplate.Application.Services
 
             var user = new User
             {
-                Username = registerDto.Username,
-                Email = registerDto.Email,
+                Username = registerDto.Username.Trim().ToLower(),
+                Email = registerDto.Email.Trim().ToLower(),
                 PasswordHash = HashPassword(registerDto.Password),
-                Role = registerDto.Role,
+                Role = registerDto.Role!.ToLower(),
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -77,7 +77,7 @@ namespace ApiTemplate.Application.Services
         public async Task<User> GetUserByUsernameAsync(string username)
         {
             var users = await _userRepository.GetAllAsync();
-            return users.FirstOrDefault(u => u.Username == username);
+            return users.FirstOrDefault(u => u.Username.Equals(username.Trim(), StringComparison.OrdinalIgnoreCase));
         }
 
         private string HashPassword(string password)
