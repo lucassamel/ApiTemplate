@@ -13,6 +13,8 @@ namespace ApiTemplate.Application.DTOs
         public string Localidade { get; set; } = string.Empty;
         [Required]
         public string Complemento { get; set; } = string.Empty;
+        [Required]
+        public string Bairro { get; set; } = string.Empty;
         [MaxLength(2)]
         [Required]
         public string Uf { get; set; } = string.Empty;

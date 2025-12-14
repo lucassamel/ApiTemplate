@@ -31,7 +31,7 @@ namespace ApiTemplate.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         [HttpGet]
         public async Task<IActionResult> GetAll()
-        {
+        {           
             var products = await _productService.GetAllProductsAsync();
 
             if (products == null || !products.Any())

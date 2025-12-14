@@ -40,7 +40,8 @@ namespace ApiTemplate.Application.Services
             Id = product.Id,
             Name = product.Name,
             Price = product.Price,
-            Description = product.Description
+            Description = product.Description,
+            Count = product.Count
         };
 
         public async Task UpdateProductAsync(Guid id, CreateProductDto dto)

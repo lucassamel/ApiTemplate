@@ -1,4 +1,6 @@
-﻿namespace ApiTemplate.Application.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ApiTemplate.Application.DTOs
 {
     public class LoginDto
     {
@@ -9,9 +11,11 @@
     public class RegisterDto
     {
         public string Username { get; set; } = string.Empty;
+        [EmailAddress]
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
-        public string? Role { get; set; } = "User";
+        public string? Role { get; set; } = "user";
+        public AddressRegisterDto Address { get; set; }
     }
 
     public class AuthResponseDto

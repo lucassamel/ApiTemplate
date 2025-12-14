@@ -13,9 +13,11 @@ namespace ApiTemplate.Application.Services
 {
 
     public class AuthService(IRepository<User> userRepository, 
-        ITokenService tokenService, IUserRepository userRepository2) : IAuthService
+        ITokenService tokenService, IUserRepository userRepository2,
+        IRepository<Address> addressRepository) : IAuthService
     {
         private readonly IRepository<User> _userRepository = userRepository;
+        private readonly IRepository<Address> _addressRepository = addressRepository;
         private readonly IUserRepository _userRepository2 = userRepository2;
         private readonly ITokenService _tokenService = tokenService;
 
@@ -70,7 +72,20 @@ namespace ApiTemplate.Application.Services
                 CreatedAt = DateTime.UtcNow
             };
 
-            await _userRepository.AddAsync(user);
+            var userCreated = await _userRepository.AddAsync(user);
+
+            var address = new Address
+            {
+                Bairro = registerDto.Address.Bairro,
+                Cep = registerDto.Address.Cep,
+                Complemento = registerDto.Address.Complemento,
+                Localidade = registerDto.Address.Localidade,
+                Uf = registerDto.Address.Uf,
+                Logradouro = registerDto.Address.Logradouro,
+                UserId = userCreated.Id
+            };
+
+            await _addressRepository.AddAsync(address);
 
             var token = _tokenService.GenerateToken(user);
 
