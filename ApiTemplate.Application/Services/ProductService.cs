@@ -2,10 +2,11 @@
 using ApiTemplate.Application.Interfaces;
 using ApiTemplate.Domain.Entities;
 using ApiTemplate.Domain.Interfaces;
+using System;
 
 namespace ApiTemplate.Application.Services
 {
-    public class ProductService(IRepository<Product> repository) : IProductService
+    public class ProductService(IRepository<Product> repository, IProductRepository productRepository) : IProductService
     {
         public async Task<ProductDto> GetProductByIdAsync(Guid id)
         {
@@ -28,6 +29,7 @@ namespace ApiTemplate.Application.Services
                 Name = dto.Name,
                 Price = dto.Price,
                 Description = dto.Description,
+                Count = dto.Count,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -51,8 +53,7 @@ namespace ApiTemplate.Application.Services
             
             existingProduct.Name = dto.Name;
             existingProduct.Price = dto.Price;
-            existingProduct.Description = dto.Description;
-            existingProduct.UpdatedAt = DateTime.UtcNow;
+            existingProduct.Description = dto.Description;            
             existingProduct.Count = dto.Count;
 
             await repository.UpdateAsync(existingProduct);

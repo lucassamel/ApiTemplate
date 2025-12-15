@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ApiTemplate.Domain.Entities;
 
 namespace ApiTemplate.Domain.Interfaces
 {
-    internal class IProductRepository
+    public interface IProductRepository
     {
+        Task UpdateProduct(Guid id, Product product);
     }
 }
