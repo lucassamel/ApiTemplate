@@ -106,7 +106,7 @@ namespace ApiTemplate.API.Controllers
         [ProducesResponseType(typeof(Response<IEnumerable<string>>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         [HttpPut("{id:Guid}")]
-        public async Task<IActionResult> Update([FromQuery] Guid id, [FromBody] CreateProductDto dto)
+        public async Task<IActionResult> Update(Guid id, [FromBody] CreateProductDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new Response<IEnumerable<string>>(ModelState.GetErrors()));
