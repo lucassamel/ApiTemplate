@@ -46,7 +46,8 @@ namespace ApiTemplate.API.Controllers
         ///    Autentica o usuário
         /// </remarks>        
         /// <returns>Um produto</returns>
-        /// <response code="200">Retorna o token do usuário</response>        
+        /// <response code="200">Retorna o token do usuário</response>    
+        /// <response code="401">Credenciais Inválidas</response>    
         /// <response code="500">Erro interno.</response>
         [ProducesResponseType(typeof(Response<AuthResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
