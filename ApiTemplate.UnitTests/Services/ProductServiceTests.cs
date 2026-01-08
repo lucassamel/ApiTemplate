@@ -10,12 +10,13 @@ namespace ApiTemplate.UnitTests.Services
     public class ProductServiceTests
     {
         private readonly Mock<IRepository<Product>> _mockRepository;
+        private readonly Mock<IProductRepository> _mockProductRepository;
         private readonly ProductService _productService;
 
         public ProductServiceTests()
         {
             _mockRepository = new Mock<IRepository<Product>>();
-            _productService = new ProductService(_mockRepository.Object);
+            _productService = new ProductService(_mockRepository.Object, _mockProductRepository.Object);
         }
 
         [Fact]

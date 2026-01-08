@@ -13,13 +13,16 @@ namespace ApiTemplate.UnitTests.Services
     {
         private readonly Mock<IRepository<User>> _mockUserRepository;
         private readonly Mock<ITokenService> _mockTokenService;
+        private readonly Mock<IUserRepository> _mockUserRepository2;
+        private readonly Mock<IRepository<Address>> _mockAddressRepository;
         private readonly AuthService _authService;
 
         public AuthServiceTests()
         {
             _mockUserRepository = new Mock<IRepository<User>>();
             _mockTokenService = new Mock<ITokenService>();
-            _authService = new AuthService(_mockUserRepository.Object, _mockTokenService.Object);
+            _authService = new AuthService(_mockUserRepository.Object, _mockTokenService.Object
+            , _mockUserRepository2.Object, _mockAddressRepository.Object);
         }
 
         [Fact]
@@ -41,6 +44,8 @@ namespace ApiTemplate.UnitTests.Services
             _mockUserRepository
                 .Setup(r => r.AddAsync(It.IsAny<User>()))
                 .ReturnsAsync((User user) => user);
+            
+            
 
             _mockTokenService
                 .Setup(t => t.GenerateToken(It.IsAny<User>()))
